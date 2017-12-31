@@ -8,6 +8,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(digitalRead(10)==HIGH){
-    digitalWrite(11,1); digitalWrite(13,1);}
+    digitalWrite(13,1);
+    while(digitalRead(10)==HIGH){
+      digitalWrite(11,1); digitalWrite(11,0);}}
   else digitalWrite(13,0);
 }
