@@ -13,6 +13,7 @@ void align(int val){
   while(ref>0){
     if(val>ref)break;
     else Serial.print(' '); ref/=10;}
+  Serial.print(val);
 }
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance. AN INSTANCE
@@ -24,6 +25,6 @@ void setup() {
 void loop() {
   delay(50);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
   //Serial.print("Ping: ");
-  Serial.print(align(sonar.ping_cm())); // Send ping, get distance in cm and print result (0 = outside set distance range)
+  align(sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
   Serial.println("cm");
 }
