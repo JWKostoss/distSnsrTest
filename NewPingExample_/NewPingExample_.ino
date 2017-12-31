@@ -30,6 +30,8 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 // NewPing setup of pins and maximum distance. AN INSTANCE
 
 void setup() {
+  pinMode(13,OUTPUT);
+  digitalWrite(13,0);
   Serial.begin(115200); // Open serial monitor at 115200 baud
 }
 
@@ -45,7 +47,7 @@ void loop() {
     else Serial.print(" inches");}
   else if((count%2)==1){
     tiem=sonar.ping();
-    Serial.print(' '); align(4,tiem);
+    Serial.print("   "); align(4,tiem);
     Serial.println("");}
   else Serial.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   count++;
