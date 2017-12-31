@@ -25,6 +25,6 @@ void setup() {
 void loop() {
   delay(50);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
   //Serial.print("Ping: ");
-  align(sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
-  Serial.println("cm");
+  align(sonar.ping_in()); // Send ping, get distance in cm and print result (0 = outside set distance range)
+  Serial.println("inches");
 }
