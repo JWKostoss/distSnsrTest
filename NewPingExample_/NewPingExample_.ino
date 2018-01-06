@@ -3,14 +3,14 @@ Example NewPing library sketch that does a ping about 20 Hz
 ---------------------------------------------------------------*/
 #include <NewPing.h>
 
-#define TRIGGER_PIN  9   // trigger pin
-#define ECHO_PIN     11  // echo pin
-#define MAX_DISTANCE 200 // Maximum distance(in inches).
-//                          rated 157.48-196.85 in.
+int TRIGGER_PIN = 5;     // trigger pin
+int ECHO_PIN = 3;        // echo pin
+int MAX_DISTANCE = 200;  // Maximum distance(in inches).
+//                         rated 157.48-196.85 in.
 
-int dist=0;
-int tiem=0;
-int count=0;
+int dist = 0;
+int tiem = 0;
+int count = 0;
 
 void align(int dig, int val){
   int ref=9999;
@@ -36,19 +36,19 @@ void setup() {
 }
 
 void loop() {
-  delay(50);  // Wait 50ms between pings
+  while((millis()%50)!=0)continue;  // Wait 50ms between pings
   //            (about 20 pings/sec). 29ms be the shortest delay.
   if((count%2)==0){
     //Serial.print("Ping: ");// NO.
     dist=sonar.ping_in(); // Send ping, get distance in inch
     align(3,dist); // and print result
     //      (0=outside set distance range) (but maybe just zero.)
-    if(dist==1)Serial.print(" inch");
+    if(dist==1)Serial.print(" inch  ");
     else Serial.print(" inches");}
   else if((count%2)==1){
     tiem=sonar.ping();
     Serial.print("   "); align(4,tiem);
     Serial.println("");}
-  else Serial.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
   count++;
 }
