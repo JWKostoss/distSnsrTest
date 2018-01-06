@@ -40,7 +40,7 @@ void setup() {
 
 void loop() {
   //while((millis()%50)!=0)continue;  
-  delay(50); // Wait 50ms between pings
+  delay(100); // Wait 50ms between pings
   //            (about 20 pings/sec). 29ms be the shortest delay.
   if((count%2)==0){
     //Serial.print("Ping: ");// NO.
@@ -54,21 +54,23 @@ void loop() {
     Serial.print("   "); align(4,tyym);
     Serial.println("");}
   else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+  int pot=analogRead(0);
+  int brt=map(pot,0,1023,0,255);
   if(tyym > 600 && tyym <= 1000){
-    digitalWrite(9, 1);
-    digitalWrite(10, 0);
-    digitalWrite(11, 0);}
+    analogWrite(9, brt);
+    analogWrite(10, 0);
+    analogWrite(11, 0);}
   else if(tyym > 400 && tyym <= 600){
-    digitalWrite(9, 1);
-    digitalWrite(10, 0);
-    digitalWrite(11, 1);}
+    analogWrite(9, brt);
+    analogWrite(10, 0);
+    analogWrite(11, brt);}
   else if(tyym > 0 && tyym <= 400){
-    digitalWrite(9, 0);
-    digitalWrite(10, 0);
-    digitalWrite(11, 1);}
+    analogWrite(9, 0);
+    analogWrite(10, 0);
+    analogWrite(11, brt);}
   else{
-    digitalWrite(9,0);
-    digitalWrite(10,1);
-    digitalWrite(11,0);}
+    analogWrite(9,0);
+    analogWrite(10,0);
+    analogWrite(11,0);}
   count++;
 }
