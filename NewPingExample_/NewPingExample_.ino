@@ -6,7 +6,7 @@ Example NewPing library sketch that does a ping about 20 Hz
 int TRIGGER_PIN=5;    // trigger pin
 int ECHO_PIN=3;       // echo pin
 int MAX_DISTANCE=500; // Maximum distance(in inches).
-//                        rated 157.48-196.85 in.
+//                       rated 157.48-196.85 in.
 
 int dist=0;
 int tyym=0;
@@ -50,12 +50,13 @@ void loop() {
     if(dist==1)Serial.print(" inch  ");
     else Serial.print(" inches");}
   else if((count%2)==1){
-    tyym=sonar.ping();
+    tyym=sonar.ping(); //NOTE: MICROSECONDS .00000X
     Serial.print("   "); align(4,tyym);
     Serial.println("");}
   else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  int pot=analogRead(0);
-  int brt=map(pot,0,1023,0,255);
+ int pot=analogRead(0);
+  if(pot<15)pot=0; else if(pot>1010)pot=1023;
+ int brt=map(pot,0,1023,0,255);
   if(tyym > 600 && tyym <= 1000){
     analogWrite(9, brt);
     analogWrite(10, 0);
