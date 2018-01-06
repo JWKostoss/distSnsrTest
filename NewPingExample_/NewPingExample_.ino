@@ -36,7 +36,7 @@ void setup() {
 }
 
 void loop() {
-  while((millis()%50)!=0)continue;  // Wait 50ms between pings
+  while((millis()%100)!=0)continue;  // Wait 50ms between pings
   //            (about 20 pings/sec). 29ms be the shortest delay.
   if((count%2)==0){
     //Serial.print("Ping: ");// NO.
