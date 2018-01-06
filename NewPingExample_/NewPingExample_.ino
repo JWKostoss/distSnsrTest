@@ -5,7 +5,7 @@ Example NewPing library sketch that does a ping about 20 Hz
 
 int TRIGGER_PIN=5;    // trigger pin
 int ECHO_PIN=3;       // echo pin
-int MAX_DISTANCE=500; // Maximum distance(in inches).
+int MAX_DISTANCE=500; // Maximum distance(in centimeters).
 //                       rated 157.48-196.85 in.
 
 int dist=0;
@@ -39,11 +39,11 @@ void setup() {
 }
 
 void loop() {
-  //while((millis()%50)!=0)continue;  
+  //while((millis()%50)!=0)continue; //may add extra ping
   delay(100); // Wait 50ms between pings
   //            (about 20 pings/sec). 29ms be the shortest delay.
   if((count%2)==0){
-    //Serial.print("Ping: ");// NO.
+    //Serial.print("Ping: "); // NO.
     dist=sonar.ping_in(); // Send ping, get distance in inch
     align(3,dist); //        and print result
     //      (0=outside set distance range) (but maybe just zero.)
