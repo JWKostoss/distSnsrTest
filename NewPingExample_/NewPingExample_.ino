@@ -5,11 +5,11 @@ Example NewPing library sketch that does a ping about 20 Hz
 
 int TRIGGER_PIN=5;    // trigger pin
 int ECHO_PIN=3;       // echo pin
-int MAX_DISTANCE=200; // Maximum distance(in inches).
+int MAX_DISTANCE=500; // Maximum distance(in inches).
 //                        rated 157.48-196.85 in.
 
 int dist=0;
-int tiem=0;
+int tyym=0;
 int count=0;
 
 void align(int dig,int val){
@@ -32,6 +32,9 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 void setup() {
   pinMode(13,OUTPUT);
   digitalWrite(13,0);
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(11,OUTPUT);
   Serial.begin(115200); // Open serial monitor at 115200 baud
 }
 
@@ -47,10 +50,25 @@ void loop() {
     if(dist==1)Serial.print(" inch  ");
     else Serial.print(" inches");}
   else if((count%2)==1){
-    tiem=sonar.ping();
-    Serial.print("   "); align(4,tiem);
+    tyym=sonar.ping();
+    Serial.print("   "); align(4,tyym);
     Serial.println("");}
   else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  
+  if(tyym > 6 && tyym <= 10){
+    digitalWrite(9, 1);
+    digitalWrite(10, 0);
+    digitalWrite(11, 0);}
+  else if(tyym > 4 && tyym <= 6){
+    digitalWrite(9, 1);
+    digitalWrite(10, 0);
+    digitalWrite(11, 1);}
+  else if(tyym > 0 && tyym <= 4);{
+    digitalWrite(9, 0);
+    digitalWrite(10, 0);
+    digitalWrite(11, 1);}
+/*  else{
+    digitalWrite(9,0);
+    digitalWrite(10,1);
+    digitalWrite(11,0);}*/
   count++;
 }
