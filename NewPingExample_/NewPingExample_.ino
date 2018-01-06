@@ -59,19 +59,15 @@ void loop() {
  int brt=map(pot,0,1023,0,255);
   if(tyym > 600 && tyym <= 1000){
     analogWrite(9, brt);
-    analogWrite(10, 0);
-    analogWrite(11, 0);}
+    analogWrite(10, 0); analogWrite(11, 0);}
   else if(tyym > 400 && tyym <= 600){
     analogWrite(9, brt);
     analogWrite(10, 0);
     analogWrite(11, brt);}
   else if(tyym > 0 && tyym <= 400){
-    analogWrite(9, 0);
-    analogWrite(10, 0);
+    analogWrite(9, 0); analogWrite(10, 0);
     analogWrite(11, brt);}
   else{
-    analogWrite(9,0);
-    analogWrite(10,0);
-    analogWrite(11,0);}
+    analogWrite(9,0); analogWrite(10,0); analogWrite(11,0);}
   count++;
 }
