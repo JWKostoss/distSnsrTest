@@ -54,21 +54,21 @@ void loop() {
     Serial.print("   "); align(4,tyym);
     Serial.println("");}
   else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  if(tyym > 6 && tyym <= 10){
+  if(tyym > 600 && tyym <= 1000){
     digitalWrite(9, 1);
     digitalWrite(10, 0);
     digitalWrite(11, 0);}
-  else if(tyym > 4 && tyym <= 6){
+  else if(tyym > 400 && tyym <= 600){
     digitalWrite(9, 1);
     digitalWrite(10, 0);
     digitalWrite(11, 1);}
-  else if(tyym > 0 && tyym <= 4);{
+  else if(tyym > 0 && tyym <= 400){
     digitalWrite(9, 0);
     digitalWrite(10, 0);
     digitalWrite(11, 1);}
-/*  else{
+  else{
     digitalWrite(9,0);
     digitalWrite(10,1);
-    digitalWrite(11,0);}*/
+    digitalWrite(11,0);}
   count++;
 }
