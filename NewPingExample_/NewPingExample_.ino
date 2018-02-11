@@ -3,16 +3,16 @@ Example NewPing library sketch that does a ping about 20 Hz
 ---------------------------------------------------------------*/
 #include <NewPing.h>
 
-#define TRIGGER_PIN  9   // trigger pin
-#define ECHO_PIN     11  // echo pin
-#define MAX_DISTANCE 200 // Maximum distance(in inches).
-//                          rated 157.48-196.85 in.
+int TRIGGER_PIN=5;    // trigger pin
+int ECHO_PIN=3;       // echo pin
+int MAX_DISTANCE=500; // Maximum distance(in centimeters).
+//                       rated 157.48-196.85 in.
 
 int dist=0;
-int tiem=0;
+int tyym=0;
 int count=0;
 
-void align(int dig, int val){
+void align(int dig,int val){
   int ref=9999;
   switch(dig){
     case 5:ref/=1; break;
@@ -32,23 +32,42 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 void setup() {
   pinMode(13,OUTPUT);
   digitalWrite(13,0);
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(11,OUTPUT);
   Serial.begin(115200); // Open serial monitor at 115200 baud
 }
 
 void loop() {
-  delay(50);  // Wait 50ms between pings
+  //while((millis()%50)!=0)continue; //may add extra ping
+  delay(100); // Wait 50ms between pings
   //            (about 20 pings/sec). 29ms be the shortest delay.
   if((count%2)==0){
-    //Serial.print("Ping: ");// NO.
+    //Serial.print("Ping: "); // NO.
     dist=sonar.ping_in(); // Send ping, get distance in inch
-    align(3,dist); // and print result
+    align(3,dist); //        and print result
     //      (0=outside set distance range) (but maybe just zero.)
-    if(dist==1)Serial.print(" inch");
+    if(dist==1)Serial.print(" inch  ");
     else Serial.print(" inches");}
   else if((count%2)==1){
-    tiem=sonar.ping();
-    Serial.print("   "); align(4,tiem);
+    tyym=sonar.ping(); //NOTE: MICROSECONDS .00000X
+    Serial.print("   "); align(4,tyym);
     Serial.println("");}
-  else Serial.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+ int pot=analogRead(0);
+  if(pot<15)pot=0; else if(pot>1010)pot=1023;
+ int brt=map(pot,0,1023,0,255);
+  if(tyym > 600 && tyym <= 1000){
+    analogWrite(9, brt);
+    analogWrite(10, 0); analogWrite(11, 0);}
+  else if(tyym > 400 && tyym <= 600){
+    analogWrite(9, brt);
+    analogWrite(10, 0);
+    analogWrite(11, brt);}
+  else if(tyym > 0 && tyym <= 400){
+    analogWrite(9, 0); analogWrite(10, 0);
+    analogWrite(11, brt);}
+  else{
+    analogWrite(9,0); analogWrite(10,0); analogWrite(11,0);}
   count++;
 }
