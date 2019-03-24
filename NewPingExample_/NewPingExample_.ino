@@ -1,18 +1,22 @@
-/*--------------------------------------------------------------
-Example NewPing library sketch that does a ping about 20 Hz
----------------------------------------------------------------*/
 #include <NewPing.h>
 
-int TRIGGER_PIN=5;    // trigger pin
-int ECHO_PIN=3;       // echo pin
-int MAX_DISTANCE=500; // Maximum distance(in centimeters).
-//                       rated 157.48-196.85 in.
+byte TRIGGER_PIN=5;
+byte ECHO_PIN=3;
+int MAX_DISTANCE=500;
 
-int dist=0;
+byte dist=0;
 int tyym=0;
-int count=0;
+byte count=0;
+int far=10800; int mid=5400; int cls=3000; int stp=400;
+byte red=127;
+int tiem=0;
+int dely=0;
+int blnk=1;
 
-void align(int dig,int val){
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);//    instance
+
+
+void align(byte dig,int val){
   int ref=9999;
   switch(dig){
     case 5:ref/=1; break;
@@ -22,52 +26,81 @@ void align(int dig,int val){
     case 1:ref/=10000; break;}
   while(ref>0){
     if(val>ref)break;
-    else Serial.print(' '); ref/=10;}
+    else{Serial.print(' '); ref/=10;}}
   Serial.print(val);
 }
 
-NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
-// NewPing setup of pins and maximum distance. AN INSTANCE
+void mult(){
+  while((tiem<300)&&(tiem>0)){
+    blnk=300/(tyym+1);
+    dely=50/blnk;
+    for(int n=0; n<blnk; n++){
+      delay(dely);
+      if(red==127) red=0;
+      else if(red==0) red=127;
+      else break;
+      analogWrite(9,red);}
+    tyym=sonar.ping(); tiem=tyym-stp;
+    Serial.print("             "); align(5,tyym);
+    Serial.print("  "); align(4,dely);
+    Serial.print("  "); align(5,blnk);
+    Serial.println("");}
+}
+
+void sngl(){
+  while((tyym<=cls)&&(tiem>=300)){
+    //if(tiem>=1400) blnk=15;    else 
+    blnk=tiem/(50*6);
+    dely=50;
+    for(int n=0; n<blnk; n++){
+      delay(dely);
+      tyym=sonar.ping(); tiem=tyym-stp;
+      if(tyym>cls) break;
+      //else if(tiem>=1400) blnk=15;      else 
+      blnk=tiem/(50*6);
+      analogWrite(9,red);
+      Serial.print("             "); align(5,tyym);
+      Serial.print("  "); align(1,blnk);
+      Serial.println("");}
+    if(red==127) red=0;
+    else if(red==0) red=127;
+    else break;}
+}
 
 void setup() {
-  pinMode(13,OUTPUT);
-  digitalWrite(13,0);
-  pinMode(9,OUTPUT);
-  pinMode(10,OUTPUT);
-  pinMode(11,OUTPUT);
-  Serial.begin(115200); // Open serial monitor at 115200 baud
+  pinMode(9,OUTPUT);// RED
+  pinMode(10,OUTPUT);//GRN
+  pinMode(11,OUTPUT);//BLU
+  digitalWrite(11,0);
+  Serial.begin(115200);
 }
 
 void loop() {
-  //while((millis()%50)!=0)continue; //may add extra ping
-  delay(100); // Wait 50ms between pings
-  //            (about 20 pings/sec). 29ms be the shortest delay.
-  if((count%2)==0){
-    //Serial.print("Ping: "); // NO.
-    dist=sonar.ping_in(); // Send ping, get distance in inch
-    align(3,dist); //        and print result
-    //      (0=outside set distance range) (but maybe just zero.)
-    if(dist==1)Serial.print(" inch  ");
-    else Serial.print(" inches");}
-  else if((count%2)==1){
-    tyym=sonar.ping(); //NOTE: MICROSECONDS .00000X
-    Serial.print("   "); align(4,tyym);
-    Serial.println("");}
-  else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
- int pot=analogRead(0);
-  if(pot<15)pot=0; else if(pot>1010)pot=1023;
- int brt=map(pot,0,1023,0,255);
-  if(tyym > 600 && tyym <= 1000){
-    analogWrite(9, brt);
-    analogWrite(10, 0); analogWrite(11, 0);}
-  else if(tyym > 400 && tyym <= 600){
-    analogWrite(9, brt);
-    analogWrite(10, 0);
-    analogWrite(11, brt);}
-  else if(tyym > 0 && tyym <= 400){
-    analogWrite(9, 0); analogWrite(10, 0);
-    analogWrite(11, brt);}
-  else{
-    analogWrite(9,0); analogWrite(10,0); analogWrite(11,0);}
-  count++;
+  if(digitalRead(8)==0){
+    delay(50);//                          Wait 50ms between pings
+    if((count%2)==0){
+      dist=sonar.ping_in(); tiem=tyym-stp;
+      align(3,dist);
+      if(dist==1)Serial.print(" inch  ");
+      else Serial.print(" inches");}
+    else if((count%2)==1){
+      tyym=sonar.ping();//             NOTE: MICROSECONDS .00000X
+      Serial.print("   "); align(5,tyym);
+      Serial.println("");}
+    else Serial.println("Eric says REEEEEEEEEEEEEEEEEEEEEEEEEE");
+    if((tyym>mid)&&(tyym<=far)){
+      analogWrite(9, 0);
+      analogWrite(10, 127);}
+    else if((tyym>cls)&&(tyym<=mid)){
+      analogWrite(9, 119); analogWrite(10, 26);}
+    else if((tyym>0)&&(tyym<=cls)){
+      analogWrite(9, red);
+      analogWrite(10, 0);
+      if(tiem>=300) sngl();
+      else if((tiem<300)&&(tiem>0)) mult();
+      else analogWrite(9,red);
+      red=127;}
+    else{analogWrite(9,0); analogWrite(10,0);}
+    count++;}
+  else delay(50);
 }
